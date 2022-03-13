@@ -25,8 +25,6 @@ GND                 		8     				21   AREF
 (AIN0) PD6          		12   	 				17   PB3 (MOSI/OC2)
 (AIN1) PD7          		13   	 				16   PB2 (SS/OC1B)
 (ICP1) PB0          		14   	 				15   PB1 (OC1A)
-
-
 */
 
 #ifndef BASE_H_
