@@ -7,23 +7,24 @@
    Project properties / C Buils/ Settings /ToolSettings/Miscellanous:
    -Wno-char-subscripts -Wfatal-errors -Wno-pointer-sign
    Project / Clean must be done after each frequency change
+	 Its not ready . Dont take it too serious!
 
  ATmega8:
 
-(RESET) PC6				1		SIGN	28   PC5 (ADC5/SCL)
+(RESET) PC6							1			SIGN		28   PC5 (ADC5/SCL)
 (RXD) PD0           		2     				27   PC4 (ADC4/SDA)
 (TXD) PD1           		3     				26   PC3 (ADC3)
 (INT0) PD2          		4     				25   PC2 (ADC2)
 (INT1) PD3          		5     				24   PC1 (ADC1)
-(XCK/T0) PD4       		6     				23   PC0 (ADC0)
-VCC                 			7     				22   GND
-GND                 			8     				21   AREF
-(XTAL1/TOSC1) PB6	9     				20   AVCC
-(XTAL2/TOSC2) PB7	10    			19   PB5 (SCK)
-(T1) PD5           	 		11   	 			18   PB4 (MISO)
-(AIN0) PD6          		12   	 			17   PB3 (MOSI/OC2)
-(AIN1) PD7          		13   	 			16   PB2 (SS/OC1B)
-(ICP1) PB0          		14   	 			15   PB1 (OC1A)
+(XCK/T0) PD4       			6     				23   PC0 (ADC0)
+VCC                 		7     				22   GND
+GND                 		8     				21   AREF
+(XTAL1/TOSC1) PB6				9     				20   AVCC
+(XTAL2/TOSC2) PB7				10    				19   PB5 (SCK)
+(T1) PD5           	 		11   	 				18   PB4 (MISO)
+(AIN0) PD6          		12   	 				17   PB3 (MOSI/OC2)
+(AIN1) PD7          		13   	 				16   PB2 (SS/OC1B)
+(ICP1) PB0          		14   	 				15   PB1 (OC1A)
 
 
 */
@@ -31,58 +32,58 @@ GND                 			8     				21   AREF
 #ifndef BASE_H_
 	#define BASE_H_
 
-	#include <avr/io.h>                 //definicje adresów portów i bitów
-	#include <stdint.h>					//Definicje typów np. int16_t, in8_t
+	#include <avr/io.h>                 //definicje adresÃ³w portÃ³w i bitÃ³w
+	#include <stdint.h>					//Definicje typÃ³w np. int16_t, in8_t
 	#include <util/delay.h>            //tylko funkcje _delay_ms i _delay_us
 	#include <stdlib.h>					//Np. itoa,ltoa,atoi,malloc,free,realloc
-	#include <stdbool.h> 				//_Bool jest bez tego, ale true i false nie. Tam jest te¿ "bool"
+	#include <stdbool.h> 				//_Bool jest bez tego, ale true i false nie. Tam jest teÂ¿ "bool"
 	#include <string.h>					//memcpy, memmov,memset...
 
-	//Makra do obs³ugi portów - obs³uga wielu pinów na raz:
-	#define PORT(x)				_PORT(x)			//Do ustawianie napiêcia pinu.
+	//Makra do obsÂ³ugi portÃ³w - obsÂ³uga wielu pinÃ³w na raz:
+	#define PORT(x)				_PORT(x)			//Do ustawianie napiÃªcia pinu.
 	#define _PORT(x)			(PORT##x)
 	#define PIN(x)					_PIN(x)			//Do odczytu stanu pinu.
 	#define _PIN(x)				(PIN##x)
-	#define DDR(x)				_DDR(x)				//Do ustawiania kierunku  dzia³ania portu,    1-wyjœcie     Definicje PB0 itd s¹ np.w pliku IOm8.h
-	#define _DDR(x)				(DDR##x)			//Musz¹ byæ dwustopniowe bo  operator ## nie rozwija argumentu.
+	#define DDR(x)				_DDR(x)				//Do ustawiania kierunku  dziaÂ³ania portu,    1-wyjÅ“cie     Definicje PB0 itd sÂ¹ np.w pliku IOm8.h
+	#define _DDR(x)				(DDR##x)			//MuszÂ¹ byÃ¦ dwustopniowe bo  operator ## nie rozwija argumentu.
 
-	#define PDIR(x)				_DDR(x)				//Kierunek pinu.  x oznacze nie portu - np. B, 1-wyjœcie, 0-wejœcie
+	#define PDIR(x)				_DDR(x)				//Kierunek pinu.  x oznacze nie portu - np. B, 1-wyjÅ“cie, 0-wejÅ“cie
 	#define POUT(x)				_PORT(x)			//Ustawianie stanu pinu.
 
-	//Makra do obs³ugi portów ( tylko jeden pin na raz mo¿na przestawiæ):
+	//Makra do obsÂ³ugi portÃ³w ( tylko jeden pin na raz moÂ¿na przestawiÃ¦):
 	#define STATE(p,n)		_STATE(p,n)							//Odczyt stanu pinu n w porcie p.
-	#define _STATE(p,n)		(PIN##p & (1<<n))				//Daje wartoœæ 0 gdy pin=0, oraz wartoœæ ró¿n¹ od zera (np. 4), gdy pin=1;
+	#define _STATE(p,n)		(PIN##p & (1<<n))				//Daje wartoÅ“Ã¦ 0 gdy pin=0, oraz wartoÅ“Ã¦ rÃ³Â¿nÂ¹ od zera (np. 4), gdy pin=1;
 
-	#define DIRIN(p,n)			_DIRIN(p,n)							//Ustawia pin n w porcie p na wejœcie.
+	#define DIRIN(p,n)			_DIRIN(p,n)							//Ustawia pin n w porcie p na wejÅ“cie.
 	#define _DIRIN(p,n)		(DDR##p &=~(1<<n))
 
-	#define DIROUT(p,n)		_DIROUT(p,n)						//Ustawia pin n w porcie p na wyjœcie.
+	#define DIROUT(p,n)		_DIROUT(p,n)						//Ustawia pin n w porcie p na wyjÅ“cie.
 	#define _DIROUT(p,n)	(DDR##p |=(1<<n))
 
-	#define SET(p,n)				_SET(p,n)							//Ustawia lub podci¹ga pin n w porcie p
+	#define SET(p,n)				_SET(p,n)							//Ustawia lub podciÂ¹ga pin n w porcie p
 	#define _SET(p,n)			(PORT##p |=(1<<n))
 
-	#define CLR(p,n)			_CLR(p,n)								//Zeruje lub likwiduje podci¹ganie pinu n w porcie p
+	#define CLR(p,n)			_CLR(p,n)								//Zeruje lub likwiduje podciÂ¹ganie pinu n w porcie p
 	#define _CLR(p,n)			(PORT##p &= ~(1<<n))
 
 	#define CHNG(p,n)			_CHNG(p,n)							//Zmienia stan pinu n w porcie p
 	#define _CHNG(p,n)		(PORT##p ^=(1<<n))
 
-	#define SETL(p,n,l) 		_SETL(p,n,l)							//Ustawia pin n na poziom L=0 lub L=1
-	#define _SETL(p,n,l)		{if(l) {PORT##p |=(1<<n);} else {PORT##p &= ~(1<<n);}} //Uwaga! wstawia if.
+	//#define SETL(p,n,l) 		_SETL(p,n,l)							//Ustawia pin n na poziom L=0 lub L=1									No sense!
+	//#define _SETL(p,n,l)		{if(l) {PORT##p |=(1<<n);} else {PORT##p &= ~(1<<n);}} //Uwaga! wstawia if.			No sense!
 
-	#define TOSTRING(x)		STRINGIFY(x)						//Rozwija makro i zamienia na string constant przed kompilacj¹.
+	#define TOSTRING(x)		STRINGIFY(x)						//Rozwija makro i zamienia na string constant przed kompilacjÂ¹.
 	#define STRINGIFY(x)	#x
 
-	//Makra do obs³ugi portów, rejestrów i zmiennych (tylko jeden pin na raz mo¿na przestawiæ):
+	//Makra do obsÂ³ugi portÃ³w, rejestrÃ³w i zmiennych (tylko jeden pin na raz moÂ¿na przestawiÃ¦):
 	#define CLRB(r,n)			(r &= ~(1<<n))		//Zerowanie bitu n w zmiennej r np CLRB(PORTB,0);
 	#define SETB(r,n)			(r |=(1<<n))			//Ustawianie bitu n w zmiennej r
 	#define CHNGB(r,n)		(r ^=(1<<n))			//Zmiana stanu bitu n w zmiennej r
 	#define STATEB(r,n)		(r & (1<<n))			//Stan bitu n w zmiennej r
 //#define bit_is_set(sfr, bit)		(_SFR_BYTE(sfr) & _BV(bit))		Test whether bit \c bit in IO register \c sfr is set.		<sfr_defs.h>
-//#define bit_is_clear(sfr, bit)	(!(_SFR_BYTE(sfr) & _BV(bit)))  Sposób wywo³ania jest taki:  bit_is_clear(PINB,1);
-//	#define bit_set(sfr, bit)			_SFR_BYTE(sfr)|=(1<<bit)		//Sposób wywo³ania jest taki: bit_set(PORTB,0);
-//	#define bit_clr(sfr, bit)			_SFR_BYTE(sfr)&=~(1<<bit) Czym to siê ró¿ni od CLRB(r,n) ?
+//#define bit_is_clear(sfr, bit)	(!(_SFR_BYTE(sfr) & _BV(bit)))  SposÃ³b wywoÂ³ania jest taki:  bit_is_clear(PINB,1);
+//	#define bit_set(sfr, bit)			_SFR_BYTE(sfr)|=(1<<bit)		//SposÃ³b wywoÂ³ania jest taki: bit_set(PORTB,0);
+//	#define bit_clr(sfr, bit)			_SFR_BYTE(sfr)&=~(1<<bit) Czym to siÃª rÃ³Â¿ni od CLRB(r,n) ?
 
 
 	#define BS(x)					(1<<x)								//Bit shift.
@@ -112,7 +113,7 @@ GND                 			8     				21   AREF
 	#define ADR(x)				&x			//Pobiera adres iksa
 	#define VALFROM(x)		*x				//Zmienna spod adresu x
 
-	//Nazwy bajtów steruj¹cych ASCII (0 do 31):
+	//Nazwy bajtÃ³w sterujÂ¹cych ASCII (0 do 31):
 	//ASCII control character or non-printing character.
 
 	#define CCNUL		00	//Null
@@ -148,8 +149,8 @@ GND                 			8     				21   AREF
 	#define CCRS			30	//Record separator
 	#define CCUS			31	//Unit separator
 	#define CCSPACE	32	//
-	#define CCZERO 	'0'		//0x30=48			//Numer znaku zero w tablicy znaków ascii
-	#define CCA	 		'A'		//0x41=65			//Numer znaku A w tablicy znaków ascii
+	#define CCZERO 	'0'		//0x30=48			//Numer znaku zero w tablicy znakÃ³w ascii
+	#define CCA	 		'A'		//0x41=65			//Numer znaku A w tablicy znakÃ³w ascii
 	#define	CCDEL		127
 
 	typedef		uint8_t		u08t;
@@ -176,29 +177,29 @@ GND                 			8     				21   AREF
 		char L:4;
 	} TBCD;
 
-/*	Ta zmienna jest rejestrem, czyli mo¿e siê zmieniæ spoza programu, dlatego musi byæ volatile.
- * Trzeba jej nadaæ wartoœæ w pliku main: SignalPortAdr=&PORTB;
- * Czyli port jest zmienn¹ pod okreœlonym na sta³e adresem. Pobieramy ten adres, a potem wp³ywamy na zmienn¹ przez ten adres.
+/*	Ta zmienna jest rejestrem, czyli moÂ¿e siÃª zmieniÃ¦ spoza programu, dlatego musi byÃ¦ volatile.
+ * Trzeba jej nadaÃ¦ wartoÅ“Ã¦ w pliku main: SignalPortAdr=&PORTB;
+ * Czyli port jest zmiennÂ¹ pod okreÅ“lonym na staÂ³e adresem. Pobieramy ten adres, a potem wpÂ³ywamy na zmiennÂ¹ przez ten adres.
  */
 	volatile extern u08t	*SignalPortAdr;
 	extern u08t	SignalLine;
 
-	/*Dwustopniowe makro jest potrzebne tylko wtedy, gdy argument P trzeba rozwin¹æ - operatory # i ## nie rozwijaj¹ argumentu,
-	 * wiêc potrzebne jest wstêpne makro tylko dla rozwiniêcia argumentu.
+	/*Dwustopniowe makro jest potrzebne tylko wtedy, gdy argument P trzeba rozwinÂ¹Ã¦ - operatory # i ## nie rozwijajÂ¹ argumentu,
+	 * wiÃªc potrzebne jest wstÃªpne makro tylko dla rozwiniÃªcia argumentu.
 	 */
-	#define		INIT_SIGNAL(P,L)		_INIT_SIGNAL(P,L)		//Teraz g³ówne makro dostanie rozwiniête ju¿ argumenty.
+	#define		INIT_SIGNAL(P,L)		_INIT_SIGNAL(P,L)		//Teraz gÂ³Ã³wne makro dostanie rozwiniÃªte juÂ¿ argumenty.
 	#define		_INIT_SIGNAL(P,L) 	{SignalLine=L;SignalPortAdr=&PORT##P;DDR##P|=(1<<L);}
-	#define		SIGNAL_ON				{*SignalPortAdr|=(1<<SignalLine);}		//Ustawia DDR na wyjœcie i podnosi.
+	#define		SIGNAL_ON				{*SignalPortAdr|=(1<<SignalLine);}		//Ustawia DDR na wyjÅ“cie i podnosi.
 	#define		SIGNAL_OFF				{*SignalPortAdr &=~(1<<SignalLine);}											//Opuszcza
-	#define		SIGNAL_BLINK(T)			{SIGNAL_ON;	_delay_ms(T);SIGNAL_OFF}		//Zapala diodê na  czas T ms.
+	#define		SIGNAL_BLINK(T)			{SIGNAL_ON;	_delay_ms(T);SIGNAL_OFF}		//Zapala diodÃª na  czas T ms.
 
-	u08t 			BitNum				(u08t Val);						//Pozycja bitu w liczbie w której jest jeden bit ustawiony, albo pozycja najwy¿szego bitu.
-	u08t				Reverse				(u08t b);							//Odwraca kolejnoœæ bitów.
+	u08t 			BitNum				(u08t Val);						//Pozycja bitu w liczbie w ktÃ³rej jest jeden bit ustawiony, albo pozycja najwyÂ¿szego bitu.
+	u08t				Reverse				(u08t b);							//Odwraca kolejnoÅ“Ã¦ bitÃ³w.
 	u08t				DecToBcd			(u08t Val);						//Konwersja liczby (0 do 99) na BCD
-	u08t				BcdToDec			(u08t Bcd);						// konwersja liczby BCD na dziesiêtn¹
+	u08t				BcdToDec			(u08t Bcd);						// konwersja liczby BCD na dziesiÃªtnÂ¹
 	void				BcdToStr				(u08t Bcd, uchar *str);		//konwersja na tekst (2 litery)
-	u08t				StrToBcd				(uchar *str);						//konwersja dwóch liter na bcd
-	uchar			ByteToChar			(u08t Val);						//Zamienia cyfrê na odp. jej znak ASCII
+	u08t				StrToBcd				(uchar *str);						//konwersja dwÃ³ch liter na bcd
+	uchar			ByteToChar			(u08t Val);						//Zamienia cyfrÃª na odp. jej znak ASCII
 	void				MemClr				(void *ptr, u08t Size);
-	void				SignalProc			(u08t val);						//Ta procedura zostanie wykonana w razie napotkania b³êdu. Val to numer b³êdu. 170 bajtów.
+	void				SignalProc			(u08t val);						//Ta procedura zostanie wykonana w razie napotkania bÂ³Ãªdu. Val to numer bÂ³Ãªdu. 170 bajtÃ³w.
 #endif /* BASE_H_ */
